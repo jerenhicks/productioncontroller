@@ -40,7 +40,12 @@ class ProductionController
 
         while (true)
         {
-            //don't stop won't stop
+            var reader = new BinaryReader(strm);
+            string p = reader.ReadString(); // you have to cast the deserialized object 
+
+            //Message message = JsonConvert.DeserializeObject<Message>(p);
+
+            Console.WriteLine(String.Format("Message received: {0} ", p));
         }
 
         strm.Close();
