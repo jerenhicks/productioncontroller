@@ -1,9 +1,5 @@
 using Newtonsoft.Json;
-using System;
-using System.Net;
 using System.Net.Sockets;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
 
 class ProductionController
 {
@@ -33,15 +29,19 @@ class ProductionController
 
     private bool StartServer(Cup cup)
     {
-        //Person p = new Person("Tyler", "Durden", 30); // create my serializable object 
-
+        Message message = Message.CreateMessage(MessageType.QUERY);
 
         TcpClient client = new TcpClient(cup.ip, cup.port); // have my connection established with a Tcp Server 
 
-        IFormatter formatter = new BinaryFormatter(); // the formatter that will serialize my object on my stream 
-
         NetworkStream strm = client.GetStream(); // the stream 
-        //formatter.Serialize(strm, p); // the serialization process 
+        var writer = new BinaryWriter(strm);
+
+        writer.Write(JsonConvert.SerializeObject(message)); // the serialization process 
+
+        while (true)
+        {
+            //don't stop won't stop
+        }
 
         strm.Close();
         client.Close();
